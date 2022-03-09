@@ -1,10 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import wilderController from './controllers/wilder';
 import { wilderValidation } from './validations';
+import wilderController from './controllers/wilder';
+import wilderRouter from './routes/wilder';
 import dotenv from 'dotenv';
 
 dotenv.config();
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -18,14 +20,13 @@ mongoose
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// app.use('/wild', wildRoutes);
+app.use('/api/wilder', wilderRouter);
 
 // routes
-app.post('/api/wilder/create', wilderValidation.create, wilderController.create);
 
 // Si route n'exite pas
 app.use((req, res) => {
     res.send("Route qui n'existe pas", 404);
 });
 
-app.listen(3000, () => console.log('Server lancé sur le port 3000'));
+app.listen(PORT, () => console.log(`Server lancé sur le port ${PORT}`));
